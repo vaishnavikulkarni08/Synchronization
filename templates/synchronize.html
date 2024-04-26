@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client</title>
+    <link rel="icon" href="/static/assests/logo.png" type="image/icon type">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .data-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .data-card pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        body {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9) url('/static/assests/bgimg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .hospital-logo {
+            width: 10vw; /* Adjusted for responsiveness */
+            max-width: 90px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .hospital-title {
+            font-size: 2.5vw; /* Adjusted for responsiveness */
+            font-weight: bold;
+            color: #333; /* Dark gray color */
+            margin-bottom: 1vw; /* Adjusted for responsiveness */
+        }
+
+        .hospital-tagline {
+            font-size: 1.25vw; /* Adjusted for responsiveness */
+            color: #555; /* Medium gray color */
+            margin-bottom: 2vw; /* Adjusted for responsiveness */
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> <!-- Added Bootstrap container -->
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <img src="/static/assests/logo.png" alt="Hospital Logo" class="hospital-logo">
+                <h1 class="hospital-title">Apollo Hospital</h1>
+                <p class="hospital-tagline">Your Trusted Healthcare Provider</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="container">
+                    <h4 class="text-center">Retrieved Data</h4>
+                    <div id="dataContainer"></div>
+                </div>
+                <div class="text-center">
+                    <button id="syncButton" class="btn btn-primary">Synchronize</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Link directly to the jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to retrieve and display documents
+            function retrieveData() {
+                $.ajax({
+                    url: '/retrieve',  // Backend route to retrieve documents
+                    method: 'GET',
+                    success: function(response) {
+                        // Clear previous data
+                        $('#dataContainer').empty();
+                        // Iterate over documents and display them
+                        response.data.forEach(function(document) {
+                            // Create a card for each document
+                            var cardHtml = '<div class="data-card">';
+                            // Iterate over keys and values of the document
+                            for (var key in document) {
+                                if (document.hasOwnProperty(key)) {
+                                    cardHtml += '<p><strong>' + key + ':</strong> ' + JSON.stringify(document[key]) + '</p>';
+                                }
+                            }
+                            cardHtml += '</div>'; // Close the card div
+                            $('#dataContainer').append(cardHtml);
+                        });
+                    },
+                    error: function(error) {
+                        console.error(error);
+                        alert('Error retrieving hospital data!');
+                    }
+                });
+            }
+        
+            // Bind retrieveData function to syncButton click event
+            $('#syncButton').click(function() {
+                retrieveData();
+            });
+        });
+    </script>
+</body>
+</html>

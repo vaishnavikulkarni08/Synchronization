@@ -1,0 +1,14 @@
+[
+  {
+      "hospital_id": "1",
+      "name": "Hospital A",
+      "address": "123 Main St, City A, State A, 12345",
+      "contact": "123-456-7890, info@hospitalA.com",
+      "doctors": [
+          "Dr. John Smith, Cardiology, Cardiology, 111-222-3333, john.smith@hospitalA.com"
+      ],
+      "patients": [
+          "Patient 1, 30, Male, 2024-04-26, Dr. John Smith, Heart Disease"
+      ]
+  }
+]
